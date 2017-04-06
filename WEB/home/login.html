@@ -28,6 +28,10 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,600,800' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="css/icomoon-social.css">
 	<link rel="stylesheet" href="css/font-awesome.min.css">
+     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main1.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <script src="js/vendor/modernizr-2.6.2.min.js"></script>
 	
 	<script src="js/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 	
@@ -56,15 +60,22 @@
                     <li class="active"><a href="index.html">Home</a></li>
                     <li><a href="../shop/index.html">Shop</a></li>
                     <li><a href="services.html">Services</a></li>
-                    <li><a href="../shop/checkout.html">Cart</a></li>
-                    <li class="divider"></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account <i class="icon-angle-down"></i></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">See profile</a></li>
-                            <li><a href="#">Logout</a></li>
-                        </ul>
-                    </li>
+                    
+                     <!-- LOGIN FORM -->
+                                    <div class="form-login pull-left">
+                                        <form action="#" method="post" class="">
+                                            <div class="form-group col-md-4">
+                                                <input type="email" required class="form-control bebas-input" placeholder="email or username">
+                                            </div>
+                                            <div class="form-group col-md-5">
+                                                <input type="password" required class="form-control bebas-input" placeholder="Password">
+                                                <a>Forgotten your password?</a>
+                                            </div>
+                                            
+                                            <button type="submit" class="pull-left send-button button"><a id="dont" href="pages/profile.html">Login</a></button>
+                                        </form>
+                                    </div>
+                                    <!-- END LOGIN FORM -->
                 </ul>
             </div>
         </div>
@@ -87,9 +98,8 @@
                             <div class="col-sm-12">
                                 <div class="carousel-content centered">
                                     <h2 class="animation animated-item-1">Welcome to ATAR JAYA! A Copy Center</h2>
-                                    <p class="animation animated-item-2">Phasellus adipiscing felis a dictum dictum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at ligula risus. </p>
                                     <br>
-                                    <a class="btn btn-md animation animated-item-3" href="#">Learn More</a>
+                                     <a class="btn btn-md animation animated-item-3" href="register.html">Register Here</a>
                                 </div>
                             </div>
                         </div>

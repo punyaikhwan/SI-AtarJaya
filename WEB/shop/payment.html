@@ -160,61 +160,88 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </div>
 <!--content-->
 <div class="container">
-	<div class="check-out">
-		<h1>Tagihan</h1>
-    	<table >
-		  <tr>
-			<th>Item</th>
-			<th>Kuantitas</th>		
-			<th>Harga satuan</th>
-			<th>Subtotal</th>
-		  </tr>
-		  <tr>
-			<td>Pulpen</td>
-			<td>1</td>
-			<td>Rp10.000</td>
-			<td>Rp10.000</td>
-		  </tr>
-		  <tr>
-			<td>Buku tulis Sidu 58 halaman</td>
-			<td>5</td>
-			<td>Rp6000</td>
-			<td>Rp30.000</td>
-		  </tr>
-		  <tr>
-			<td>Mouse logitech wireles K0809</td>
-			<td>1</td>
-			<td>Rp150.000</td>
-			<td>Rp150.000</td>
-		  </tr>
-		  <tr>
-			<td>Penggaris besi 30cm</td>
-			<td>1</td>
-			<td>Rp6.000</td>
-			<td>Rp6.000</td>
-		  </tr>
-		  <tr>
-		  	<td></td>
-		  	<td></td>
-		  	<td></td>
-		  	<td>-----------------------------+</td>
-		  </tr>
-		  <tr>
-		  	<td></td>
-		  	<td></td>
-		  	<td></td>
-		  	<td>Rp196.000</td>
-		  </tr>
-		</table>
-	<a href="javascript:;" onclick = "order()" class="to-buy simpleCart_empty">ORDER SEKARANG</a>
-	<SCRIPT>
-	function order() {
-		window.alert("Pesanan Anda telah diterima. Silakan hubungi 0857xxxxxx untuk melakukan pembayaran.");
+	<div class = "col-md-8">
+		<div class="check-out">
+			<form method="get">
+			  <div class="form-group">
+			    <label for="address">Alamat:</label>
+			    <textarea row="5" class="form-control" id="address"></textarea>
+			  </div>
+			  <div class="form-group">
+			    <label for="jasapengiriman">Pilih Metode Pengiriman</label>
+			    <select class="form-control" id="jasapengiriman">
+			    	<option>Gojek</option>
+			    	<option>Datang sendiri</option>
+			    </select>
+			  </div>  
+			   <div class="form-group">
+			    <label for="jasapengiriman">Pilih Metode Pembayaran</label>
+			    <select class="form-control" id="jasapengiriman">
+			    	<option>Tunai</option>
+			    	<option>Transfer bank</option>
+			    </select>
+			  </div>
+			  <button type="submit" onclick="order()" class="btn btn-default">Submit</button>
+			</form>
+			<a href="javascript:;" onclick = "order()" class="to-buy simpleCart_empty">ORDER SEKARANG</a>
+			<SCRIPT>
+				function order() {
+					window.alert("Pesanan Anda telah diterima. Silakan hubungi 0857xxxxxx untuk melakukan pembayaran.");
 
-	}
-	</SCRIPT>
+				}
+			</SCRIPT>
+		 </div>
+	</div>
+	<div class = "col-md-4">
+		<div class="check-out">
+			<h1><span style="font-size:30px; font-family: Arial"> Transaction list</span></h1>
+	    	<table >
+			  <tr>
+				<th>Item</th>
+				<th>Kuantitas</th>		
+				<th>Harga satuan</th>
+				<th>Subtotal</th>
+			  </tr>
+			  <tr>
+				<td>Pulpen</td>
+				<td>1</td>
+				<td>Rp10.000</td>
+				<td>Rp10.000</td>
+			  </tr>
+			  <tr>
+				<td>Buku tulis Sidu 58 halaman</td>
+				<td>5</td>
+				<td>Rp6000</td>
+				<td>Rp30.000</td>
+			  </tr>
+			  <tr>
+				<td>Mouse logitech wireles K0809</td>
+				<td>1</td>
+				<td>Rp150.000</td>
+				<td>Rp150.000</td>
+			  </tr>
+			  <tr>
+				<td>Penggaris besi 30cm</td>
+				<td>1</td>
+				<td>Rp6.000</td>
+				<td>Rp6.000</td>
+			  </tr>
+			  <tr>
+			  	<td></td>
+			  	<td></td>
+			  	<td></td>
+			  	<td>-----------------------------+</td>
+			  </tr>
+			  <tr>
+			  	<td></td>
+			  	<td></td>
+			  	<td></td>
+			  	<td>Rp196.000</td>
+			  </tr>
+			</table>
+		</div>
+	</div>
 	<div class="clearfix"> </div>
-    </div>
 </div>
 <!--footer-->
 <div class="footer">

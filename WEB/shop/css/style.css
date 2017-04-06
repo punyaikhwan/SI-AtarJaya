@@ -987,6 +987,30 @@ a.to-buy{
   text-align: center;
   text-decoration: none;
 }
+
+a.addproduct{
+	padding: 0.3em 0.7em;
+  color: #FFF;
+  background:  #1a53ff;
+  margin: 0.5em 0 0;
+  font-size: 1em;
+  display: inline-block;
+  line-height: 1.6em;
+  text-align: center;
+  text-decoration: none;
+}
+
+a.delete{
+	padding: 0.3em 0.7em;
+  color: #FFF;
+  background: red;
+  margin: 0.5em 0 0;
+  font-size: 1em;
+  display: inline-block;
+  line-height: 1.6em;
+  text-align: center;
+  text-decoration: none;
+}
 a.to-buy:hover{
   background: #000;
 }

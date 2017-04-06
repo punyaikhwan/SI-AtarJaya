@@ -37,16 +37,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <div class="header">
 	<div class="header-top">
 		<div class="container">
-		<div class="col-sm-4 world">
-					<ul >
-						Back to <a href="../home/index.html">ATAR JAYA homepage</a>
-					</ul>
-				</div>
-				<div class="col-sm-4 logo">
-					<a href="index.html"><img src="images/logo.png" alt=""></a>	
-				</div>
-		
-			<div class="col-sm-4 header-left">		
+			<div class="col-sm-3 world">
+						<ul >
+							Back to <a href="../home/index.html">ATAR JAYA homepage</a>
+						</ul>
+			</div>
+			<div class="col-sm-4 logo">
+				<a href="index.html"><img src="images/logo.png" alt=""></a>	
+			</div>
+
+			<div class="col-sm-3 header-left">		
 					<!--<p class="log"><a href="account.html"  >Login</a>
 						<span>or</span><a  href="account.html"  >Signup</a></p>-->
 					<div class="cart box_1">
@@ -56,13 +56,28 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							<img src="images/cart.png" alt=""/></h3>
 						</a>
 						<p><a href="javascript:;" class="simpleCart_empty">Empty Cart</a></p>
-
 					</div>
+					
 					<div class="clearfix"> </div>
 			</div>
+
+			<div class="col-sm-2">
+				<ul class="memenu skyblue">
+				  <li class=" grid"><a href="#"><span style="font-color:black">My Account<i class="icon-angle-down"></i></span></a>
+					  	<div class="mepanel">
+							<div class="h_nav">
+								<ul>
+									<li><a href="account-setting.html">Pengaturan Akun</a></li>
+									<li><a href="../home/index.html">Logout</a></li>										
+								</ul>	
+							</div>		
+						</div>
+				  	</li>
+				  </ul>
 				<div class="clearfix"> </div>
+			</div>
 		</div>
-		</div>
+	</div>
 		<div class="container">
 			<div class="head-top">
 				<div class="col-sm-2 number">
@@ -181,9 +196,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			    	<option>Transfer bank</option>
 			    </select>
 			  </div>
-			  <button type="submit" onclick="order()" class="btn btn-default">Submit</button>
+			  <a type="submit" href="javascript:;" onclick = "order()" class="to-buy simpleCart_empty">ORDER SEKARANG</a>
 			</form>
-			<a href="javascript:;" onclick = "order()" class="to-buy simpleCart_empty">ORDER SEKARANG</a>
+			
 			<SCRIPT>
 				function order() {
 					window.alert("Pesanan Anda telah diterima. Silakan hubungi 0857xxxxxx untuk melakukan pembayaran.");

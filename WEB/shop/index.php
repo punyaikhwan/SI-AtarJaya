@@ -4,10 +4,17 @@ Author URL: http://w3layouts.com
 License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
 -->
+
+<?php
+	session_start();
+	include 'connect.php';
+	$username = $_SESSION["username"];
+	$_SESSION["username"]=$username;
+?>
 <!DOCTYPE html>
 <html>
 <head>
-<title>Checkout | Atar Jaya</title>
+<title>Atar Jaya | Menjual Alat-Alat Tulis Kantor</title>
 <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="js/jquery.min.js"></script>
@@ -25,7 +32,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script type="text/javascript" src="js/memenu.js"></script>
 <script>$(document).ready(function(){$(".memenu").memenu();});</script>
 <script src="js/simpleCart.min.js"> </script>
+<script src="js/script.js"> </script>
 <!-- slide -->
+<script src="js/responsiveslides.min.js"></script>
+   <script>
+    $(function () {
+      $("#slider").responsiveSlides({
+      	auto: true,
+      	speed: 500,
+        namespace: "callbacks",
+        pager: true,
+      });
+    });
+  </script>
 </head>
 <body>
 <!--header-->
@@ -38,19 +57,32 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						</ul>
 			</div>
 			<div class="col-sm-4 logo">
-				<a href="index.html"><img src="images/logo.png" alt=""></a>	
+				<a href="../shop"><img src="images/logo.png" alt=""></a>	
 			</div>
 
 			<div class="col-sm-3 header-left">		
 					<!--<p class="log"><a href="account.html"  >Login</a>
 						<span>or</span><a  href="account.html"  >Signup</a></p>-->
 					<div class="cart box_1">
-						<a href="checkout.html">
+						<a href="checkout.php">
 						<h3> <div class="total">
-							<span class="simpleCart_total"></span></div>
+								<?php
+								//Hitung total cart
+								$sql = "SELECT Kuantitas, Harga from cart NATURAL JOIN barang WHERE UsernamePelanggan = '$username' AND cart.IdBarang = barang.IdBarang";
+								$result = mysqli_query($conn, $sql);
+								$total_cart = 0;
+								if (mysqli_num_rows($result) > 0) {
+									while ($row = mysqli_fetch_assoc($result)) {
+										$total_cart += $row["Kuantitas"]*$row["Harga"];
+									}
+								}
+								?>
+
+								Rp<span id="total_cart"><?php echo $total_cart;?></span>
+							</div>
 							<img src="images/cart.png" alt=""/></h3>
 						</a>
-						<p><a href="javascript:;" class="simpleCart_empty">Empty Cart</a></p>
+						<p><a href="javascript:;" onclick="emptyCart()" class="simpleCart_empty">Empty Cart</a></p>
 					</div>
 					
 					<div class="clearfix"> </div>
@@ -167,77 +199,100 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<!---->		
 		</div>
 	</div>
-</div><!--//header-->
-<!---->
-<div class="container">
-	<div class="check-out">
-		<h1>Checkout</h1>
-    	    <table >
-		  <tr>
-			<th>Item</th>
-			<th>Qty</th>		
-			<th>Prices</th>
-			<th>Delery Detials</th>
-			<th>Subtotal</th>
-		  </tr>
-		  <tr>
-			<td class="ring-in"><a href="single.html" class="at-in"><img src="images/ce.jpg" class="img-responsive" alt=""></a>
-			<div class="sed">
-				<h5>Sed ut perspiciatis unde</h5>
-				<p>(At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium) </p>
-			
-			</div>
-			<div class="clearfix"> </div></td>
-			<td class="check"><input type="text" value="1" onfocus="this.value='';" onblur="if (this.value == '') {this.value ='';}"></td>		
-			<td>$100.00</td>
-			<td>FREE SHIPPING</td>
-			<td>$100.00</td>
-		  </tr>
-		  <tr>
-		  <td class="ring-in"><a href="single.html" class="at-in"><img src="images/ce1.jpg" class="img-responsive" alt=""></a>
-			<div class="sed">
-				<h5>Sed ut perspiciatis unde</h5>
-				<p>(At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium ) </p>
-			</div>
-			<div class="clearfix"> </div></td>
-			<td class="check"><input type="text" value="1" onfocus="this.value='';" onblur="if (this.value == '') {this.value ='';}"></td>		
-			<td>$200.00</td>
-			<td>FREE SHIPPING</td>
-			<td>$200.00</td>
-		  </tr>
-		  <tr>
-		  <td class="ring-in"><a href="single.html" class="at-in"><img src="images/ce2.jpg" class="img-responsive" alt=""></a>
-			<div class="sed">
-				<h5>Sed ut perspiciatis unde</h5>
-				<p>(At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium) </p>
-			</div>
-			<div class="clearfix"> </div></td>
-			<td class="check"><input type="text" value="1" onfocus="this.value='';" onblur="if (this.value == '') {this.value ='';}"></td>		
-			<td>$150.00</td>
-			<td>FREE SHIPPING</td>
-			<td>$150.00</td>
-		  </tr>
-		  <tr>
-		  	<td></td>
-		  	<td></td>
-		  	<td></td>
-		  	<td></td>
-		  	<td>---------------------------------------------+</td>
-		  </tr>
-		  <tr>
-		  	<td></td>
-		  	<td></td>
-		  	<td></td>
-		  	<td><b>Total</b></td>
-		  	<td>Rp 196.000</td>
-		  </tr>
-	</table>
-	<a href="payment.html" class=" to-buy">PROCEED TO BUY</a>
-	<div class="clearfix"> </div>
-    </div>
 </div>
+<!--banner-->
+<div class="banner">
+	<div class="col-sm-3 banner-mat">
+		<img class="img-responsive"	src="images/ba1.jpg" alt="">
+	</div>
+	<div class="col-sm-6 matter-banner">
+	 	<div class="slider">
+	    	<div class="callbacks_container">
+	      		<ul class="rslides" id="slider">
+	        		<li>
+	          			<img src="images/1.gif" alt="">
+	       			 </li>
+			 		 <li>
+	          			<img src="images/2.jpg" alt="">   
+	       			 </li>
+					 <li>
+	          			<img src="images/3.jpg" alt="">
+	        		</li>	
+	      		</ul>
+	 	 	</div>
+		</div>
+	</div>
+	<div class="col-sm-3 banner-mat">
+		<img class="img-responsive" src="images/ba.jpg" alt="">
+	</div>
+	<div class="clearfix"> </div>
+</div>
+<!--//banner-->
+<!--content-->
+<!--GET PRODUCTS-->
+<?php
+	$sql = "SELECT * FROM barang";
+	//Mekanisme include dari database ke php
+	$result = mysqli_query($conn, $sql); //menyimpan daftar produk
+?>
+<div class="content">
+	<div class="container">
+		<div class="content-top">
+			<h1>Recent Products</h1>
+			<div class="content-top1">
+			<?php
+			//Tampilkan di layar
+			if (mysqli_num_rows($result) > 0) {
+			    // output data of each row
+			    while($row = mysqli_fetch_assoc($result)) {
+			    	$idBarang = $row['IdBarang'];
+			    	$namaBarang = $row['NamaBarang'];
+			    	$deskripsi = $row['Deskripsi'];
+			    	$foto = $row['Foto'];
+			    	$stok = $row['Stok'];
+			    	$harga = $row['Harga'];
+
+			    	if ($stok > 0) {
+				    ?>
+						<div class="col-md-3 col-md2">
+							<div class="col-md1 simpleCart_shelfItem">
+								<?php echo '<img class="img-responsive" src="'.$foto.'" alt="" />';?>
+								<h3><?php echo $namaBarang;?></h3>
+								<div class="price">
+										<h5 class="item_price">Rp<?php echo $harga;?></h5>
+										<?php echo '<a href="#" class="item-add" onclick="addToCart(\''.$idBarang.'\')">Add To Cart</a>';?>
+										<div class="clearfix"> </div>
+								</div>
+							</div>
+						</div>
+						<?php
+						}
+					}
+				}
+				?>	
+			<div class="clearfix"> </div>
+			</div>	
+		</div>
+	</div>
+</div>
+<!--//content-->
 <!--footer-->
 <div class="footer">
+	<div class="container">
+		<div class="footer-top">
+			<div class="col-md-8 top-footer">
+				<iframe src=https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.996183502019!2d107.61514651413303!3d-6.891058669346602!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e6546c4e5851%3A0x850c852d1c1149fb!2sAtar+Jaya!5e0!3m2!1sid!2sid!4v1491178122231" allowfullscreen=""></iframe>
+			</div>
+			<div class="col-md-4 top-footer1">
+				<h2>Newsletter</h2>
+					<form>
+						<input type="text" value="" onfocus="this.value='';" onblur="if (this.value == '') {this.value ='';}">
+						<input type="submit" value="SUBSCRIBE">
+					</form>
+			</div>
+			<div class="clearfix"> </div>	
+		</div>	
+	</div>
 	<div class="footer-bottom">
 		<div class="container">
 				<div class="col-sm-3 footer-bottom-cate">
@@ -266,7 +321,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			</div>
 	</div>
 </div>
-
 <!--//footer-->
 </body>
 </html>

@@ -1,7 +1,19 @@
+<!--A Design by W3layouts 
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<?php
+	session_start();
+	include 'connect.php';
+	$username = $_SESSION["username"];
+	$_SESSION["username"]=$username;
+?>
 <!DOCTYPE html>
 <html>
 <head>
-<title>Atar Jaya | Menjual Alat-Alat Tulis Kantor</title>
+<title>Checkout | Atar Jaya</title>
 <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="js/jquery.min.js"></script>
@@ -19,18 +31,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script type="text/javascript" src="js/memenu.js"></script>
 <script>$(document).ready(function(){$(".memenu").memenu();});</script>
 <script src="js/simpleCart.min.js"> </script>
+<script src="js/script.js"> </script>
+
 <!-- slide -->
-<script src="js/responsiveslides.min.js"></script>
-   <script>
-    $(function () {
-      $("#slider").responsiveSlides({
-      	auto: true,
-      	speed: 500,
-        namespace: "callbacks",
-        pager: true,
-      });
-    });
-  </script>
 </head>
 <body>
 <!--header-->
@@ -43,19 +46,32 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						</ul>
 			</div>
 			<div class="col-sm-4 logo">
-				<a href="index.html"><img src="images/logo.png" alt=""></a>	
+				<a href="../shop"><img src="images/logo.png" alt=""></a>	
 			</div>
 
 			<div class="col-sm-3 header-left">		
 					<!--<p class="log"><a href="account.html"  >Login</a>
 						<span>or</span><a  href="account.html"  >Signup</a></p>-->
 					<div class="cart box_1">
-						<a href="checkout.html">
+						<a href="checkout.php">
 						<h3> <div class="total">
-							<span class="simpleCart_total"></span></div>
+								<?php
+								//Hitung total cart
+								$sql = "SELECT Kuantitas, Harga from cart NATURAL JOIN barang WHERE UsernamePelanggan = '$username' AND cart.IdBarang = barang.IdBarang";
+								$result = mysqli_query($conn, $sql);
+								$total_cart = 0;
+								if (mysqli_num_rows($result) > 0) {
+									while ($row = mysqli_fetch_assoc($result)) {
+										$total_cart += $row["Kuantitas"]*$row["Harga"];
+									}
+								}
+								?>
+
+								Rp<span id="total_cart"><?php echo $total_cart;?></span>
+							</div>
 							<img src="images/cart.png" alt=""/></h3>
 						</a>
-						<p><a href="javascript:;" class="simpleCart_empty">Empty Cart</a></p>
+						<p><a href="javascript:;" onclick="emptyCart()" class="simpleCart_empty">Empty Cart</a></p>
 					</div>
 					
 					<div class="clearfix"> </div>
@@ -173,96 +189,83 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		</div>
 	</div>
 </div>
-<!--content-->
-<div class="container">
-	<div class = "col-md-8">
-		<div class="check-out">
-			<form method="get">
-			  <div class="form-group">
-			    <label for="address">Alamat:</label>
-			    <textarea row="5" class="form-control" id="address"></textarea>
-			  </div>
-			  <div class="form-group">
-			    <label for="jasapengiriman">Pilih Metode Pengiriman</label>
-			    <select class="form-control" id="jasapengiriman">
-			    	<option>Gojek</option>
-			    	<option>Datang sendiri</option>
-			    </select>
-			  </div>  
-			   <div class="form-group">
-			    <label for="jasapengiriman">Pilih Metode Pembayaran</label>
-			    <select class="form-control" id="jasapengiriman">
-			    	<option>Tunai</option>
-			    	<option>Transfer bank</option>
-			    </select>
-			  </div>
-			  <a type="submit" href="javascript:;" onclick = "order()" class="to-buy simpleCart_empty">ORDER SEKARANG</a>
-			</form>
-			
-			<SCRIPT>
-				function order() {
-					window.alert("Pesanan Anda telah diterima. Silakan hubungi 0857xxxxxx untuk melakukan pembayaran.");
-
-				}
-			</SCRIPT>
-		 </div>
-	</div>
-	<!--GET CHECKOUT PRODUCT-->
+<!--//header-->
+<!---->
+<!--GET CHECKOUT PRODUCT-->
 <?php
 	$sql = "SELECT IdTransaksi, IdBarang, Foto, NamaBarang, Deskripsi, Harga, Kuantitas FROM cart NATURAL JOIN barang WHERE UsernamePelanggan='$username' AND cart.IdBarang = barang.IdBarang";
 	//Mekanisme include dari database ke php
 	$result = mysqli_query($conn, $sql); //menyimpan daftar checkout
 ?>
-	<div class = "col-md-4">
-		<div class="check-out">
-			<h1><span style="font-size:30px; font-family: Arial"> Transaction list</span></h1>
-	    	<table >
+<div class="container">
+	<div class="check-out">
+		<h1>Checkout</h1>
+    	    <table >
 			  <tr>
 				<th>Item</th>
-				<th>Kuantitas</th>		
-				<th>Harga satuan</th>
+				<th>Qty</th>		
+				<th>Prices</th>
+				<th>Delery Detials</th>
 				<th>Subtotal</th>
 			  </tr>
-			  <tr>
-				<td>Pulpen</td>
-				<td>1</td>
-				<td>Rp10.000</td>
-				<td>Rp10.000</td>
+			  <?php
+			//Tampilkan di layar
+			if (mysqli_num_rows($result) > 0) {
+				$total_cart = 0;
+			    // output data of each row
+			    while($row = mysqli_fetch_assoc($result)) {
+			    	$idTransaksi = $row['IdTransaksi'];
+			    	$idBarang = $row['IdBarang'];
+			    	$namaBarang = $row['NamaBarang'];
+			    	$deskripsi = $row['Deskripsi'];
+			    	$foto = $row['Foto'];
+			    	$kuantitas = $row['Kuantitas'];
+			    	$harga = $row['Harga'];
+			?>
+			  <tr id="item<?php echo $idTransaksi;?>">
+				<td class="ring-in"><a href="single.html" class="at-in"><?php echo '<img src="'.$foto.'" class="img-responsive" alt="">';?></a>
+				<div class="sed">
+					<h5><?php echo $namaBarang;?></h5>
+					<p><?php echo $deskripsi;?></p>
+				
+				</div>
+				<div class="clearfix"> </div></td>
+				<?php
+					$totalcartbefore = $total_cart;
+			    	$total_cart += $kuantitas*$harga;
+			    ?>
+				<td class="check"><input id="kuantitas<?php echo $idTransaksi;?>" type="text" value="<?php echo $kuantitas;?>" onkeyup = "totalprice(<?php echo $harga.','.$total_cart.','.$idTransaksi;?>)" onchange="save(<?php echo $idTransaksi;?>)"></td>		
+				<td>Rp<?php echo $harga;?></td>
+				<td>FREE SHIPPING</td>
+				<td><span id="total_price<?php echo $idTransaksi;?>">Rp<?php echo $kuantitas*$harga;?></span></td>
+				<td>
+					<a href="#" onclick="deleteitem(<?php echo $idTransaksi.','.$kuantitas*$harga;?>)" class="delete">Delete</a>
+				</td>
 			  </tr>
+			  	<div id="counttotalcart<?php echo $idTransaksi;?>">
+				<?php
+				}
+			}
+			?>
+				</div>
 			  <tr>
-				<td>Buku tulis Sidu 58 halaman</td>
-				<td>5</td>
-				<td>Rp6000</td>
-				<td>Rp30.000</td>
-			  </tr>
-			  <tr>
-				<td>Mouse logitech wireles K0809</td>
-				<td>1</td>
-				<td>Rp150.000</td>
-				<td>Rp150.000</td>
-			  </tr>
-			  <tr>
-				<td>Penggaris besi 30cm</td>
-				<td>1</td>
-				<td>Rp6.000</td>
-				<td>Rp6.000</td>
+			  	<td></td>
+			  	<td></td>
+			  	<td></td>
+			  	<td></td>
+			  	<td>---------------------------------------------+</td>
 			  </tr>
 			  <tr>
 			  	<td></td>
 			  	<td></td>
 			  	<td></td>
-			  	<td>-----------------------------+</td>
+			  	<td><b>Total</b></td>
+			  	<td><span id="totalcart">Rp <?php echo $total_cart;?></span></td>
 			  </tr>
-			  <tr>
-			  	<td></td>
-			  	<td></td>
-			  	<td></td>
-			  	<td>Rp196.000</td>
-			  </tr>
-			</table>
-		</div>
-	</div>
+	</table>
+	<a href="payment.php" class=" to-buy">PROCEED TO BUY</a>
 	<div class="clearfix"> </div>
+    </div>
 </div>
 <!--footer-->
 <div class="footer">
@@ -294,6 +297,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			</div>
 	</div>
 </div>
+
 <!--//footer-->
 </body>
 </html>

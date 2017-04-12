@@ -1,9 +1,9 @@
-<!--A Design by W3layouts 
-Author: W3layout
-Author URL: http://w3layouts.com
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
+<?php
+	session_start();
+	include 'connect.php';
+	$username = $_SESSION["username"];
+	$_SESSION["username"]=$username;
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,6 +25,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script type="text/javascript" src="js/memenu.js"></script>
 <script>$(document).ready(function(){$(".memenu").memenu();});</script>
 <script src="js/simpleCart.min.js"> </script>
+<script src="js/script.js"></script>
 <!-- slide -->
 <script src="js/responsiveslides.min.js"></script>
    <script>
@@ -40,6 +41,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </head>
 <body>
 <!--header-->
+<!--header-->
 <div class="header">
 	<div class="header-top">
 		<div class="container">
@@ -49,19 +51,32 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						</ul>
 			</div>
 			<div class="col-sm-4 logo">
-				<a href="index.html"><img src="images/logo.png" alt=""></a>	
+				<a href="../shop"><img src="images/logo.png" alt=""></a>	
 			</div>
 
 			<div class="col-sm-3 header-left">		
 					<!--<p class="log"><a href="account.html"  >Login</a>
 						<span>or</span><a  href="account.html"  >Signup</a></p>-->
 					<div class="cart box_1">
-						<a href="checkout.html">
+						<a href="checkout.php">
 						<h3> <div class="total">
-							<span class="simpleCart_total"></span></div>
+								<?php
+								//Hitung total cart
+								$sql = "SELECT Kuantitas, Harga from cart NATURAL JOIN barang WHERE UsernamePelanggan = '$username' AND cart.IdBarang = barang.IdBarang";
+								$result = mysqli_query($conn, $sql);
+								$total_cart = 0;
+								if (mysqli_num_rows($result) > 0) {
+									while ($row = mysqli_fetch_assoc($result)) {
+										$total_cart += $row["Kuantitas"]*$row["Harga"];
+									}
+								}
+								?>
+
+								Rp<span id="total_cart"><?php echo $total_cart;?></span>
+							</div>
 							<img src="images/cart.png" alt=""/></h3>
 						</a>
-						<p><a href="javascript:;" class="simpleCart_empty">Empty Cart</a></p>
+						<p><a href="javascript:;" onclick="emptyCart()" class="simpleCart_empty">Empty Cart</a></p>
 					</div>
 					
 					<div class="clearfix"> </div>
@@ -179,161 +194,88 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		</div>
 	</div>
 </div>
-<!--banner-->
-<div class="banner">
-	<div class="col-sm-3 banner-mat">
-		<img class="img-responsive"	src="images/ba1.jpg" alt="">
+<!--content-->
+<div class="container">
+	<div class = "col-md-8">
+		<div class="check-out">
+			<form method="post" action="order.php">
+			  <div class="form-group">
+			    <label for="address">Alamat:</label>
+			    <textarea name="alamat" row="5" class="form-control" id="address"></textarea>
+			  </div>
+			  <div class="form-group">
+			    <label for="jasapengiriman">Pilih Metode Pengiriman</label>
+			    <select name="metodekirim" class="form-control" id="jasapengiriman">
+			    	<option>Gojek</option>
+			    	<option>Datang sendiri</option>
+			    </select>
+			  </div>  
+			   <div class="form-group">
+			    <label for="jasapengiriman">Pilih Metode Pembayaran</label>
+			    <select name="metodebayar" class="form-control" id="jasapengiriman">
+			    	<option>Tunai</option>
+			    	<option>Transfer bank</option>
+			    </select>
+			  </div>
+			  <button type="submit" onclick="order()">ORDER SEKARANG</button>
+			</form>
+		 </div>
 	</div>
-	<div class="col-sm-6 matter-banner">
-	 	<div class="slider">
-	    	<div class="callbacks_container">
-	      		<ul class="rslides" id="slider">
-	        		<li>
-	          			<img src="images/1.gif" alt="">
-	       			 </li>
-			 		 <li>
-	          			<img src="images/2.jpg" alt="">   
-	       			 </li>
-					 <li>
-	          			<img src="images/3.jpg" alt="">
-	        		</li>	
-	      		</ul>
-	 	 	</div>
+	<!--GET CHECKOUT PRODUCT-->
+	<?php
+		$sql = "SELECT IdTransaksi, NamaBarang, Harga, Kuantitas FROM cart NATURAL JOIN barang WHERE UsernamePelanggan='$username' AND cart.IdBarang = barang.IdBarang";
+		//Mekanisme include dari database ke php
+		$result = mysqli_query($conn, $sql); //menyimpan daftar checkout
+	?>
+	<div class = "col-md-4">
+		<div class="check-out">
+			<h1><span style="font-size:30px; font-family: Arial"> Transaction list</span></h1>
+	    	<table >
+			  <tr>
+				<th>Item</th>
+				<th>Kuantitas</th>		
+				<th>Harga satuan</th>
+				<th>Subtotal</th>
+			  </tr>
+			  <?php
+			  //Tampilkan di layar
+				if (mysqli_num_rows($result) > 0) {
+				    // output data of each row
+				    while($row = mysqli_fetch_assoc($result)) {
+				    	$idTransaksi = $row['IdTransaksi'];
+				    	$namaBarang = $row['NamaBarang'];
+				    	$kuantitas = $row['Kuantitas'];
+				    	$harga = $row['Harga'];
+				?>
+			  <tr>
+				<td><?php echo $namaBarang;?></td>
+				<td><?php echo $kuantitas;?></td>
+				<td>Rp<?php echo $harga;?></td>
+				<td>Rp<?php echo $kuantitas*$harga;?></td>
+			  </tr>
+			  <?php
+				}
+			}
+			?>
+			  <tr>
+			  	<td></td>
+			  	<td></td>
+			  	<td></td>
+			  	<td>-------------+</td>
+			  </tr>
+			  <tr>
+			  	<td></td>
+			  	<td></td>
+			  	<td></td>
+			  	<td>Rp<?php echo $total_cart;?></td>
+			  </tr>
+			</table>
 		</div>
-	</div>
-	<div class="col-sm-3 banner-mat">
-		<img class="img-responsive" src="images/ba.jpg" alt="">
 	</div>
 	<div class="clearfix"> </div>
 </div>
-<!--//banner-->
-<!--content-->
-<div class="content">
-	<div class="container">
-		<div class="content-top">
-			<h1>Recent Products</h1>
-			<div class="content-top1">
-				<div class="col-md-3 col-md2">
-					<div class="col-md1 simpleCart_shelfItem">
-						<img class="img-responsive" src="images/pi.png" alt="" />
-						<h3>AirLine</h3>
-						<div class="price">
-								<h5 class="item_price">Rp10000</h5>
-								<a href="#" class="item_add">Add To Cart</a>
-								<div class="clearfix"> </div>
-						</div>
-					</div>
-				</div>	
-			<div class="col-md-3 col-md2">
-					<div class="col-md1 simpleCart_shelfItem">
-						<img class="img-responsive" src="images/pi2.png" alt="" />
-						<h3>Stadler drawing pen</h3>
-						<div class="price">
-								<h5 class="item_price">Rp15000</h5>
-								<a href="#" class="item_add">Add To Cart</a>
-								<div class="clearfix"> </div>
-						</div>
-						
-					</div>
-				</div>	
-			<div class="col-md-3 col-md2">
-					<div class="col-md1 simpleCart_shelfItem">
-							<img class="img-responsive" src="images/pi4.png" alt="" />
-						<h3>Sandisk 8GB</h3>
-						<div class="price">
-								<h5 class="item_price">Rp60000</h5>
-								<a href="#" class="item_add">Add To Cart</a>
-								<div class="clearfix"> </div>
-						</div>
-						
-					</div>
-				</div>	
-			<div class="col-md-3 col-md2">
-					<div class="col-md1 simpleCart_shelfItem">
-							<img class="img-responsive" src="images/pi1.png" alt="" />
-						<h3>Logitech mouse new</h3>
-						<div class="price">
-								<h5 class="item_price">Rp12000</h5>
-								<a href="#" class="item_add">Add To Cart</a>
-								<div class="clearfix"> </div>
-						</div>
-						
-					</div>
-				</div>	
-			<div class="clearfix"> </div>
-			</div>	
-			<div class="content-top1">
-				<div class="col-md-3 col-md2">
-					<div class="col-md1 simpleCart_shelfItem">
-						<img class="img-responsive" src="images/pi3.png" alt="" />
-						<h3>Mouse flat</h3>
-						<div class="price">
-								<h5 class="item_price">Rp150000</h5>
-								<a href="#" class="item_add">Add To Cart</a>
-								<div class="clearfix"> </div>
-						</div>
-						
-					</div>
-				</div>	
-			<div class="col-md-3 col-md2">
-					<div class="col-md1 simpleCart_shelfItem">
-						<img class="img-responsive" src="images/pi5.png" alt="" />
-						<h3>Kingstone flashdisk 16GB</h3>
-						<div class="price">
-								<h5 class="item_price">120000</h5>
-								<a href="#" class="item_add">Add To Cart</a>
-								<div class="clearfix"> </div>
-						</div>
-						
-					</div>
-				</div>	
-			<div class="col-md-3 col-md2">
-					<div class="col-md1 simpleCart_shelfItem">
-							<img class="img-responsive" src="images/pi6.png" alt="" />
-						<h3>Kingstone flashdisk 64GB</h3>
-						<div class="price">
-								<h5 class="item_price">Rp160000</h5>
-								<a href="#" class="item_add">Add To Cart</a>
-								<div class="clearfix"> </div>
-						</div>
-						
-					</div>
-				</div>	
-			<div class="col-md-3 col-md2">
-					<div class="col-md1 simpleCart_shelfItem">
-							<img class="img-responsive" src="images/pi7.png" alt="" />
-						<h3>Penggaris metal</h3>
-						<div class="price">
-								<h5 class="item_price">Rp25000</h5>
-								<a href="#" class="item_add">Add To Cart</a>
-								<div class="clearfix"> </div>
-						</div>
-						
-					</div>
-				</div>	
-			<div class="clearfix"> </div>
-			</div>	
-		</div>
-	</div>
-</div>
-<!--//content-->
 <!--footer-->
 <div class="footer">
-	<div class="container">
-		<div class="footer-top">
-			<div class="col-md-8 top-footer">
-				<iframe src=https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.996183502019!2d107.61514651413303!3d-6.891058669346602!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e6546c4e5851%3A0x850c852d1c1149fb!2sAtar+Jaya!5e0!3m2!1sid!2sid!4v1491178122231" allowfullscreen=""></iframe>
-			</div>
-			<div class="col-md-4 top-footer1">
-				<h2>Newsletter</h2>
-					<form>
-						<input type="text" value="" onfocus="this.value='';" onblur="if (this.value == '') {this.value ='';}">
-						<input type="submit" value="SUBSCRIBE">
-					</form>
-			</div>
-			<div class="clearfix"> </div>	
-		</div>	
-	</div>
 	<div class="footer-bottom">
 		<div class="container">
 				<div class="col-sm-3 footer-bottom-cate">

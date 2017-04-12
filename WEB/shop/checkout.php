@@ -230,7 +230,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				
 				</div>
 				<div class="clearfix"> </div></td>
-				<td class="check"><input id="kuantitas<?php echo $idTransaksi;?>" type="text" value="<?php echo $kuantitas;?>" onkeyup = "totalprice(<?php echo $harga.','.$total_cart.','.$idTransaksi;?>)" onchange="save(<?php echo $kuantitas.','.$idTransaksi;?>)"></td>		
+				<?php
+					$totalcartbefore = $total_cart;
+			    	$total_cart += $kuantitas*$harga;
+			    ?>
+				<td class="check"><input id="kuantitas<?php echo $idTransaksi;?>" type="text" value="<?php echo $kuantitas;?>" onkeyup = "totalprice(<?php echo $harga.','.$total_cart.','.$idTransaksi;?>)" onchange="save(<?php echo $idTransaksi;?>)"></td>		
 				<td>Rp<?php echo $harga;?></td>
 				<td>FREE SHIPPING</td>
 				<td><span id="total_price<?php echo $idTransaksi;?>">Rp<?php echo $kuantitas*$harga;?></span></td>
@@ -240,7 +244,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			  </tr>
 			  	<div id="counttotalcart<?php echo $idTransaksi;?>">
 				<?php
-			    	$total_cart += $kuantitas*$harga;
 				}
 			}
 			?>
@@ -257,7 +260,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			  	<td></td>
 			  	<td></td>
 			  	<td><b>Total</b></td>
-			  	<span id = "counttotalcart2"></span>
 			  	<td><span id="totalcart">Rp <?php echo $total_cart;?></span></td>
 			  </tr>
 	</table>

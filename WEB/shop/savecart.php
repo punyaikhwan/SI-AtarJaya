@@ -8,6 +8,7 @@ untuk implementasi AJAX-->
 	$kuantitas = $_REQUEST["Kuantitas"];
 	$idTransaksi = $_REQUEST["IdTransaksi"];
 	$deletedID = $_REQUEST["deletedID"];
+	echo $kuantitas;
 
 	if($deletedID == "") {
 		$sql = "UPDATE cart SET Kuantitas = '$kuantitas' WHERE IdTransaksi = '$idTransaksi'";		

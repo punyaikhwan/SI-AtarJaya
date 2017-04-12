@@ -8,7 +8,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <?php
 	session_start();
 	include 'connect.php';
-	$username = "ikhwan";
+	$username = $_SESSION["username"];
 	$_SESSION["username"]=$username;
 ?>
 <!DOCTYPE html>

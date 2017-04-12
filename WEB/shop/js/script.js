@@ -23,17 +23,21 @@ function emptyCart() {
 function totalprice(harga, totalcart, idTransaksi) {
     var x = document.getElementById("kuantitas"+idTransaksi).value;
     document.getElementById("total_price"+idTransaksi).innerHTML= 'Rp'+x*harga;
-    document.getElementById("totalcart").innerHTML= 'Rp'+(totalcart+x*harga);
-    document.getElementById("counttotalcart"+idTransaksi).innerHTML = '<?php $total_cart = '+(totalcart+x*harga)+';} }?>';
+    document.getElementById("totalcart").innerHTML= 'Rp'+(totalcartbefore+x*harga);
 }
 
-function save(kuantitas, idTransaksi) {
+function save(idTransaksi) {
+    //document.getElementById("tes").innerHTML = "Hahaha";
+    //window.alert(idTransaksi);
+    var kuantitas = document.getElementById("kuantitas"+idTransaksi).value;
+    //window.alert(idTransaksi);
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-                //document.getElementById("total_cart").innerHTML = this.responseText;
+                //document.getElementById("tes").innerHTML = "hahaha";
             }
         };
+        //window.alert(idTransaksi);
         xhttp.open("GET", "savecart.php?IdTransaksi="+idTransaksi+"&Kuantitas="+kuantitas, true);
         xhttp.send();
 }

@@ -198,26 +198,26 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <div class="container">
 	<div class = "col-md-8">
 		<div class="check-out">
-			<form method="get">
+			<form method="post" action="order.php">
 			  <div class="form-group">
 			    <label for="address">Alamat:</label>
-			    <textarea row="5" class="form-control" id="address"></textarea>
+			    <textarea name="alamat" row="5" class="form-control" id="address"></textarea>
 			  </div>
 			  <div class="form-group">
 			    <label for="jasapengiriman">Pilih Metode Pengiriman</label>
-			    <select class="form-control" id="jasapengiriman">
+			    <select name="metodekirim" class="form-control" id="jasapengiriman">
 			    	<option>Gojek</option>
 			    	<option>Datang sendiri</option>
 			    </select>
 			  </div>  
 			   <div class="form-group">
 			    <label for="jasapengiriman">Pilih Metode Pembayaran</label>
-			    <select class="form-control" id="jasapengiriman">
+			    <select name="metodebayar" class="form-control" id="jasapengiriman">
 			    	<option>Tunai</option>
 			    	<option>Transfer bank</option>
 			    </select>
 			  </div>
-			  <a type="submit" href="javascript:;" onclick = "order()" class="to-buy simpleCart_empty">ORDER SEKARANG</a>
+			  <button type="submit" onclick="order()">ORDER SEKARANG</button>
 			</form>
 		 </div>
 	</div>

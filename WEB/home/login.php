@@ -62,7 +62,7 @@
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="active"><a href="index.html">Home</a></li>
-                    <li><a href="../shop/index.html">Shop</a></li>
+                    <li><a href="../shop/index.php">Shop</a></li>
                     <li><a href="services.html">Services</a></li>
                     
                      <?php
@@ -203,7 +203,7 @@
 		        			<i class="icon-home"></i>
 		        			<h3>Toko</h3>
 		        			<p>Lihat daftar barang yang kami tawarkan dan pesanlah! Kami akan mengirimkannya untuk Anda.</p>
-		        			<a href="../shop/index.html" class="btn">Pergi ke toko</a>
+		        			<a href="../shop/index.php" class="btn">Pergi ke toko</a>
 		        		</div>
 	        		</div>
 	        		<div class="col-md-4 col-sm-6">

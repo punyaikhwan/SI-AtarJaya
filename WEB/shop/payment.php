@@ -106,7 +106,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				</div>
 		 <div class="col-sm-8 h_menu4">
 				<ul class="memenu skyblue">
-					  <li class=" grid"><a  href="index.html">Home</a></li>	
+					  <li class=" grid"><a  href="index.php">Home</a></li>	
 				      <li><a  href="#">Daftar Barang</a>
 				      	<div class="mepanel">
 						<div class="row">
